@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "engram-reader": {
+      "type": "stdio",
+      "command": "engram-reader-mcp",
+      "args": []
+    }
+  }
+}

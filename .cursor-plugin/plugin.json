@@ -1,0 +1,9 @@
+{
+  "name": "engram-reader",
+  "version": "0.1.0",
+  "description": "Read privacy-filtered Engram memory through six read-only MCP tools.",
+  "license": "MIT",
+  "keywords": ["mcp", "memory", "read-only"],
+  "skills": "skills",
+  "mcpServers": "mcp.json"
+}

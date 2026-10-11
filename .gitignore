@@ -1,0 +1,14 @@
+.venv/
+__pycache__/
+*.pyc
+.connector-state/
+blocked-terms.json
+allowed-projects.json
+installation.json
+verification.json
+*.db
+*.db-wal
+*.db-shm
+*.enc
+*.pem
+*.log
