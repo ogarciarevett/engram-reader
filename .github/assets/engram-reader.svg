@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+<title id="title">engram-reader logo</title>
+<desc id="desc">An open memory book with a magnifying glass.</desc>
+<g stroke="#283C46" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+<path d="M128 65C97 48 67 47 40 59v123c29-12 60-10 88 6 28-16 59-18 88-6V59c-27-12-57-11-88 6Z" fill="#E8EFEA"/><path d="M128 65v123M61 84h43M61 105h33M61 126h37M151 84h42" fill="none"/><circle cx="166" cy="137" r="35" fill="#62C9B2"/><path d="m191 163 26 27" fill="none" stroke-width="17"/><path d="m150 137 10 10 20-22" fill="none"/>
+</g>
+</svg>
