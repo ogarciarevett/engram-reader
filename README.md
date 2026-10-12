@@ -39,7 +39,7 @@ python3 scripts/engram_reader.py refresh
 python3 scripts/engram_reader.py verify
 ```
 
-Automatic mode initially selects all projects that survive filtering. A pinned empty project list publishes no memory. MCP startup audits the published snapshot against the current private policy and serves a disposable copy. The HTTP export requires an explicitly present blocklist and pinned allowlist, even when either list is empty.
+Automatic mode initially selects all projects that survive filtering. A pinned empty project list publishes no memory. Refresh audits the snapshot and publishes an audit receipt beside it. MCP startup verifies the snapshot and current policy hashes against that receipt, then serves a disposable copy. A missing or stale receipt triggers a full audit before serving. The HTTP export requires an explicitly present blocklist and pinned allowlist, even when either list is empty.
 
 ## Plugin package
 
@@ -116,5 +116,13 @@ See [HTTP connector setup](docs/HTTP-CONNECTOR.md) for OAuth, transport configur
 ```
 
 The suite uses synthetic users, projects and exclusion terms in temporary stores. It tests real stdio initialization, all six tools over HTTP, OAuth refresh and revocation, encrypted tenant isolation, sandbox restrictions, atomic publication and private config loading. Client UI acceptance remains a separate manual check.
+
+Run the optional performance regression with 3,000 synthetic exclusion terms and 2,000 synthetic observations:
+
+```sh
+ENGRAM_READER_BENCHMARK=1 .venv/bin/python -B -m unittest discover -s tests -p test_fast_start.py -k large_synthetic -v
+```
+
+It reports refresh and MCP initialize times and requires initialization within three seconds. It uses temporary synthetic state and never reads or changes installed private policy.
 
 Released under the [MIT license](LICENSE).

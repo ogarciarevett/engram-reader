@@ -8,7 +8,13 @@ The repository contains only `scripts/blocked-terms.example.json`, with an empty
 
 Matching normalizes case, Unicode compatibility characters, combining marks, invisible formatting characters and supported confusables. Empty terms are rejected. An empty list matches no text. All textual keys and values are checked before publishing or returning data. A pinned allowlist limits project scope; automatic mode selects eligible projects from the source.
 
-On a failed refresh, the previous snapshot is retained only if it passes the current policy audit. A dirty or unverifiable snapshot is replaced with schema-only data, or removed if its schema cannot be read. Startup audits the snapshot before launching the six-tool MCP process. Each process receives a disposable copy with cloud autosync disabled and inherited Engram overrides removed.
+Each refresh and audit compiles the normalized terms into one literal substring matcher and normalizes each inspected field once. The comparison rules and original stored text stay unchanged.
+
+On a failed refresh, the previous snapshot is retained only if it passes the current policy audit. A dirty or unverifiable snapshot is replaced with schema-only data, or removed if its schema cannot be read. A successful refresh publishes `filtered/audit-receipt.json` with SHA-256 hashes of the finalized database and normalized exclusion policy plus exact project allowlist, the reader version, passing counts and audit time. The receipt contains no terms, project names or memory text and has private file permissions.
+
+Startup holds the refresh lock while validating both hashes and the reader version. A matching receipt certifies the exact previously audited snapshot under the current policy. Missing, malformed or mismatched receipts trigger the full audit; a failing audit refuses to launch MCP. SQLite WAL, shared-memory and journal sidecars also require a full audit because their content is outside the main file hash. Publication replaces the database before the receipt, so an interrupted refresh leaves a mismatched receipt that cannot bypass auditing. The receipt relies on the same trusted local state directory as the snapshot and installed reader. The `verify` command always performs the full audit.
+
+Each process receives a disposable copy with cloud autosync disabled and inherited Engram overrides removed.
 
 ## HTTP boundaries
 
