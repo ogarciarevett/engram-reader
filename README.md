@@ -1,8 +1,32 @@
-# Engram Reader
+<div align="center">
+
+<img src=".github/assets/engram-reader.svg" width="180" alt="engram-reader: an open memory book with a magnifying glass">
+
+# engram-reader
+
+**Read privacy-filtered Engram memory through MCP.**
+
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Python](https://img.shields.io/badge/Python-3776AB.svg)](#quick-setup)
+
+Works with **Engram** · **MCP**
+
+</div>
+
+---
 
 A generic, read-only MCP server over a privacy-filtered [Engram](https://github.com/Gentleman-Programming/engram) memory snapshot. Use the same stdio command with Grok Bot, Cursor, Claude Code or Codex. A separate Streamable HTTP adapter implements OAuth and tenant isolation for development of remote integrations.
 
 The name describes the read-only interface without tying it to a client or vendor. The six tools are `mem_search`, `mem_context`, `mem_get_observation`, `mem_timeline`, `mem_stats` and `mem_list_projects`. Writes, arbitrary SQL, shell execution and outbound fetch tools are unavailable.
+
+```mermaid
+flowchart LR
+    source[("Engram store<br/>opened read-only")] --> filter["Refresh and filter<br/>private blocklist + project allowlist"]
+    filter --> snapshot[("Published snapshot")]
+    snapshot -->|startup audit, disposable copy| mcp["engram-reader-mcp<br/>stdio, six read tools"]
+    mcp --> clients["Grok Bot · Cursor · Claude Code · Codex"]
+    filter -.->|encrypted per tenant| http["HTTP adapter<br/>OAuth, sandboxed reads"]
+```
 
 ## Quick setup
 
