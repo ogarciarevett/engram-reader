@@ -34,6 +34,7 @@ Validated on macOS with Engram 3.3.2 and Python 3.12. The HTTP adapter's worker 
 
 ```sh
 python3 -m venv .venv
+.venv/bin/python -m pip install "pip @ https://files.pythonhosted.org/packages/3f/06/3e4420302363fbb71be3c7f35ce042f54bfca330e3e66b3a2e3c4cca579f/pip-26.2.2-py3-none-any.whl#sha256=fd7f4dfa8190e014013b9f08f3e973f4e4c26ffd179a204895533a7254813a70"
 .venv/bin/python -m pip install -r requirements-connector.txt
 mkdir -p "$HOME/.config/engram-reader"
 cp scripts/blocked-terms.example.json "$HOME/.config/engram-reader/blocked-terms.json"
@@ -150,3 +151,6 @@ ENGRAM_READER_BENCHMARK=1 .venv/bin/python -B -m unittest discover -s tests -p t
 It reports refresh and MCP initialize times and requires initialization within three seconds. It uses temporary synthetic state and never reads or changes installed private policy.
 
 Released under the [MIT license](LICENSE).
+
+Python downloads require patched trust tooling: pip >=26.2.2 (bootstrap above),
+certifi >=2026.10.19, and uv >=0.13.4 when using uv.

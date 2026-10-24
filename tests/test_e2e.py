@@ -8,6 +8,9 @@ from pathlib import Path
 import tempfile
 import threading
 import unittest
+from unittest.mock import patch
+from types import SimpleNamespace
+import time
 from urllib.parse import parse_qs, urlparse
 import httpx
 import uvicorn
@@ -120,7 +123,11 @@ class EndToEndTests(unittest.IsolatedAsyncioTestCase):
         token = await self.token("alice", "reader")
         headers = {"Authorization": "Bearer " + token, "Accept": "application/json, text/event-stream"}
         payload = {"jsonrpc": "2.0", "id": 1, "method": "tools/call", "params": {"name": "mem_stats", "arguments": {}}}
-        statuses = [(await self.http.post("/mcp", json=payload, headers=headers)).status_code for _ in range(11)]
+        # Freeze only the boundary module's clock; the event loop and HTTP timeouts
+        # keep real time. Slow hosted runners must still exercise one burst window.
+        clock = SimpleNamespace(monotonic=lambda: 1000.0, time=time.time)
+        with patch.object(h, "time", clock):
+            statuses = [(await self.http.post("/mcp", json=payload, headers=headers)).status_code for _ in range(11)]
         self.assertEqual(statuses[:10], [200] * 10)
         self.assertEqual(statuses[-1], 429)
 
